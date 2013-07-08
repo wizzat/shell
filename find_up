@@ -1,0 +1,15 @@
+#!/bin/bash
+
+while [ 1 ]
+do
+    if [ -e $1 ]; then
+        echo $PWD/$1
+        exit 0
+    else
+        OLDDIR=$PWD
+        cd ..
+        if [ $OLDDIR == $PWD ]; then
+            exit 1
+        fi
+    fi
+done

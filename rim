@@ -1,0 +1,70 @@
+#!/usr/bin/perl -w
+use strict;
+
+use Getopt::Long;
+
+GetOptions (
+    't|tag'    => \my $tag,
+    'p|parse'  => \my $parse,
+    'e|edit'   => \my $edit,
+);
+
+$tag = 1 if $parse;
+
+my %files_to_open;
+
+my @lines = <STDIN>
+    unless @ARGV;
+push(@lines, @ARGV);
+
+my @parses = (
+    '\(.*\.(.*)\)',
+    '.*\.(.*)\.txt$',
+);
+for my $file (@lines) {
+    if ($parse) {
+        my $found = 0;
+        for (@parses) {
+            if ($file =~ /$_/) {
+                $file =$1;
+                $found = 1;
+                last;
+            }
+        }
+
+        next unless $found;
+    }
+
+    if ($tag && $file) {
+        $file = `findname 'package-body_${file}*.sql'`
+            ||  `findname 'package_${file}*.sql'`
+            ||  `( cd \`find_up main\` && cd schemas && findname 'package*_*${file}*.sql' )`
+            || `findname '${file}*.groovy'`
+            ||  `findname '${file}*.java'`
+            ||  `findname '${file}*.sql'`
+            ||  `findname '*${file}*'`
+        ;
+
+        unless ($file) {
+            print("Unable to find file with pattern: ${file}\n");
+            next;
+        }
+
+        $files_to_open{$_} = 1 for split /\n/, $file;
+    } else {
+        $files_to_open{$file} = 1;
+    }
+}
+
+sub run_cmd {
+    my $cmd = shift;
+    chomp($cmd);
+    print("$cmd\n");
+    system($cmd);
+}
+
+for my $file (keys %files_to_open) {
+    run_cmd("p4 edit $file") if $edit;
+    run_cmd("mvim --servername DEV --remote $file");
+    select(undef, undef, undef, 0.25);
+}

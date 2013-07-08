@@ -1,0 +1,36 @@
+#!/usr/bin/perl -w
+use strict;
+use warnings;
+
+use Set::Scalar;
+
+my $flags = 'i';
+
+sub main {
+    my @results = map { Set::Scalar->new(grep_results($_)) } @ARGV;
+
+    die "No files passed back?" unless @results;
+
+    my $files = shift @results;
+
+    foreach my $result (@results) {
+        $files = $files->intersection($result);
+    }
+
+    print "$_\n" for $files->members();
+}
+
+sub grep_results {
+    my $search_arg = shift;
+    my %results;
+
+    my $output  = `ack-grep -l${flags} '${search_arg}'`;
+
+    foreach my $file (split(/\n/, $output)) {
+        $results{$file} = 1;
+    }
+
+    return keys %results;
+}
+
+main();
