@@ -9,6 +9,7 @@ do
         OLDDIR=$PWD
         cd ..
         if [ $OLDDIR == $PWD ]; then
+            echo $2
             exit 1
         fi
     fi
