@@ -20,6 +20,7 @@ my @upper_words = qw/
     else
     elsif
     end
+    exists
     fetch
     float
     from
@@ -47,17 +48,18 @@ my @upper_words = qw/
     sysdate
     then
     timestamp
+    unique
     update
+    using
     values
     varchar
     varchar2
     where
-    exists
-    using
 /;
 
 push(@upper_words,
     'execute immediate',
+    'create index',
     'create table',
     'create sequence',
     'end if',
