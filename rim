@@ -3,6 +3,8 @@ use strict;
 
 use Getopt::Long;
 
+my $vimserver = $ENV{VIMSERVER} || "DEV";
+
 GetOptions (
     't|tag'    => \my $tag,
     'p|parse'  => \my $parse,
@@ -65,6 +67,6 @@ sub run_cmd {
 
 for my $file (keys %files_to_open) {
     run_cmd("p4 edit $file") if $edit;
-    run_cmd("mvim --servername DEV --remote $file");
+    run_cmd("mvim --servername $vimserver --remote $file");
     select(undef, undef, undef, 0.25);
 }
