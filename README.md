@@ -1,7 +1,7 @@
 shell
 =====
 
-Shell Utilities
+Shell Utilities.
 
 ack\_and: An ack-grep based utility which finds the set of files that contain all arguments.  It could be rewritten to use egrep -r over ack-grep.  An example is in order:
     $ ack foobar -l
@@ -95,3 +95,7 @@ rim: A utility script which takes care of vim --remote --servername DEV for me. 
 tableize.pl: A utility script which I use to tableize certain blocks of code.  It integrates into vim with:
     map ,wt :perldo s/\s+$//g<CR>:perldo s/\t/    /g<CR>
     map ,a  :!~/work/shell/tableize.pl<CR>,wt<CR>
+
+cdots.sh: A shell utility that I use heavily.  It has its own license (GPL).
+
+LICENSE: MIT, except for cdots.sh which has its own license.
