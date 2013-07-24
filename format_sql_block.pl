@@ -9,6 +9,7 @@ my @upper_words = qw/
     auto_increment
     begin
     between
+    cascade
     commit
     cursor
     date
@@ -31,6 +32,7 @@ my @upper_words = qw/
     integer
     into
     is
+    like
     loop
     noparallel
     not
@@ -48,6 +50,8 @@ my @upper_words = qw/
     sysdate
     then
     timestamp
+    truncate
+    union
     unique
     update
     using
@@ -58,32 +62,35 @@ my @upper_words = qw/
 /;
 
 push(@upper_words,
-    'execute immediate',
-    'create index',
-    'create table',
-    'create sequence',
-    'end if',
-    'delete from',
-    'exit when',
-    'group by',
-    'order by',
-    'exception when',
+    'add column',
+    'add primary key',
+    'alter table',
     'case when',
-    'sql%rowcount',
+    'create index',
     'create or replace',
-    'package body',
+    'create sequence',
+    'create table',
+    'create temp table',
+    'create temporary table',
+    'delete from',
+    'drop sequence',
+    'drop table',
+    'end if',
+    'exception when',
+    'execute immediate',
+    'exit when',
+    'foreign key',
+    'group by',
     'inner join',
     'left outer join',
     'on',
-    'drop table',
-    'drop sequence',
-    'reuse storage',
-    'truncate table',
+    'order by',
+    'package body',
     'primary key',
-    'foreign key',
-    'alter table',
-    'add primary key',
-    'add column',
+    'reuse storage',
+    'sql%rowcount',
+    'truncate table',
+    'union all',
 );
 
 while (<STDIN>) {
