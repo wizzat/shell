@@ -41,10 +41,9 @@ sub maintain_field_widths {
 
     for (my $i = 0; $i < scalar @$field_ref; ++$i) {
         my $contents = \$field_ref->[$i];
-        $$contents =~ s/^ +//;
-        $$contents =~ s/ +$//;
+        $$contents =~ s/^ +(.*) +$/$1/;
 
-        $field_width->{$i} = max($field_width->{$i} || 0, length($$contents) + 1);
+        $field_width->{$i} = max($field_width->{$i} || 0, length($$contents));
     }
 }
 
@@ -55,6 +54,7 @@ sub get_wrapper_tokens {
     my $close_tokens = '';
 
     $$line =~ s/^ +//;
+    $$line =~ s/ +$//;
     if ($$line =~ s/^([\(\[{ ]+)//) {
         $open_tokens = $1;
         $open_tokens =~ s/  / /g;
@@ -62,10 +62,11 @@ sub get_wrapper_tokens {
 
     $open_tokens = sprintf("%${margin}s%s", "", $open_tokens);
 
-    if ($$line =~ s/([,}) ]+)$//) {
+    if ($$line =~ s/([,})]+)$//) {
         $close_tokens = $1;
         $close_tokens =~ s/  / /g;
         $close_tokens =~ s/ +$//;
+        $close_tokens =~ s/^ //;
     }
 
     return [ $open_tokens, $close_tokens ];
@@ -74,7 +75,7 @@ sub get_wrapper_tokens {
 sub print_with_size {
     my ($rows, $field_width, $terminators) = @_;
 
-    my @widths      = map { $field_width->{$_} } sort keys %{$field_width};
+    my @widths = map { $field_width->{$_} } sort keys %{$field_width};
 
     foreach my $row (@$rows) {
         my $line_terminators           = shift @$terminators;
@@ -87,7 +88,7 @@ sub print_with_size {
             push(@columns, sprintf("%-${width}s", $row->[$column]));
         }
 
-        my $final_string = $open_token . join(", ", @columns) . $close_token . "\n";
+        my $final_string = $open_token . join(" , ", @columns) . " " . $close_token . "\n";
         $final_string =~ s/( +),/,$1/g;
         $final_string =~ s/ +$//;
 
