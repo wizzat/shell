@@ -5,10 +5,10 @@ mkdir -p $CKDIR
 
 function ck {
     local TAG=${1-$CKDEFAULT_TAG}
-    local TAG_CONTENTS=${2-$PWD}
+    local TAG_CONTENTS=${2-"$PWD"}
 
     if [ -d "$TAG_CONTENTS" ]; then
-        TAG_CONTENTS=`cd "$TAG_CONTENTS" && echo $PWD`;
+        TAG_CONTENTS=`cd "$TAG_CONTENTS" && echo "$PWD"`;
         echo "$TAG_CONTENTS" > "$CKDIR/$TAG"
         echo "Checkpoint ($TAG) = $TAG_CONTENTS"
         return 0
@@ -28,7 +28,7 @@ function gock {
     fi
 
     local TO_DIR=`cat $FILE_NAME`
-    if [ "$TO_DIR" != $PWD ]; then
+    if [ "$TO_DIR" != "$PWD" ]; then
         [ "$CKBOUNCE_TAG" ] && ck $CKBOUNCE_TAG
         cd "$TO_DIR"
         echo "Currently in $PWD"
@@ -69,10 +69,10 @@ function ..to() {
     do
         OLDDIR=$PWD
         cd ..
-        if [ `basename $PWD` == $TARGET ]; then
+        if [ `basename "$PWD"` == "$TARGET" ]; then
             echo "Currently in $PWD"
             return 0
-        elif [ $OLDDIR == $PWD ]; then
+        elif [ "$OLDDIR" == "$PWD" ]; then
             cd $ORIGDIR
             echo "Unable to find parent directory '$TARGET' in $PWD"
             return 1
