@@ -6,6 +6,7 @@ mkdir -p $CKDIR
 function ck {
     local TAG=${1-$CKDEFAULT_TAG}
     local TAG_CONTENTS=${2-"$PWD"}
+    
 
     if [ -d "$TAG_CONTENTS" ]; then
         TAG_CONTENTS=`cd "$TAG_CONTENTS" && echo "$PWD"`;
@@ -18,6 +19,9 @@ function ck {
     fi
 }
 
+function go {
+    gock $@
+}
 function gock {
     local TAG=${1-$CKDEFAULT_TAG}
     local FILE_NAME="$CKDIR/$TAG"
@@ -61,10 +65,20 @@ function delck {
     fi
 }
 
+function ..() {
+    ..to $@
+}
 function ..to() {
     local ORIGDIR=$PWD
     local OLDDIR=$PWD
     local TARGET=$1
+
+    if [ -z "$TARGET" ]
+    then
+        cd ..
+        return 0
+    fi
+
     while [ 1 ]
     do
         OLDDIR=$PWD
@@ -79,3 +93,26 @@ function ..to() {
         fi
     done
 }
+
+function _.._completion {
+    local cur
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    COMPREPLY=($(compgen -W "$(pwd | sed -e 's/\// /g')" -- ${cur}))
+    return 0
+}
+
+function _ck_completion {
+    local cur
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    COMPREPLY=($(compgen -W "$(ls $CKDIR)" -- ${cur}))
+    return 0
+}
+
+complete -F _.._completion ..to
+complete -F _.._completion ..
+complete -F _ck_completion delck
+complete -F _ck_completion ckck
+complete -F _ck_completion gock
+complete -F _ck_completion go
