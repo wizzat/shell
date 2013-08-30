@@ -1,0 +1,31 @@
+#!/usr/bin/env perl
+use strict;
+
+my $from = $ARGV[0];
+my $to = $ARGV[1];
+my $USAGE = qq/
+   To, From 
+/;
+
+die $USAGE unless $from && $to;
+
+my @files;
+for my $file (`s3cmd ls $from`) {
+    chomp $file;
+    my $path = $file;
+    $path =~ s/.*s3/s3/;
+
+    my $new_file = $path;
+    $new_file =~ s;s3:/;;;
+    print "$new_file\n";
+
+    push(@files, $path);
+
+}
+#use Data::Dumper;
+#warn Dumper \@files;
+
+#$FROM=$1
+#$TO=$2
+#
+#  | perl -pe 's/.*s3/s3/' | perl -pe 's/.*2012/2012/' | xargs -P4 -I{} bash -c 's3cmd cp $1/{} $2/{}'

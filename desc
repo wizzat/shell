@@ -1,0 +1,21 @@
+#!/bin/bash
+
+COMMAND="desc $1"
+OUTPUT_DIR=~/.desc_output
+OUTPUT_FILE=$OUTPUT_DIR/$1 
+ORACLE_INSTANCE="redacted"
+
+mkdir -p $OUTPUT_DIR
+find $OUTPUT_DIR -mtime 1 | xargs rm -f
+
+if [ -f $OUTPUT_FILE ]; then
+    echo "Prefetched result"
+else
+    echo "Fetching result"
+    echo $COMMAND | sqlplus -S `whoami`/test@devdb > $OUTPUT_FILE
+    grep -q 'no listener' $OUTPUT_FILE
+    if [[ 0 == $? ]]; then
+        echo $COMMAND | sqlplus -S  $ORACLE_INSTANCE > $OUTPUT_FILE
+    fi;
+fi;
+cat $OUTPUT_FILE

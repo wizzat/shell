@@ -31,6 +31,8 @@ ack\_not: An ack-grep based utility which finds the set of files containing the 
     $ ack_not foobar correct_foobar_import
     /home/wizzat/project/file1
 
+add: Adds the numbers in a series of columns.  Mostly useful in vim selections.
+
 checkpoints.sh: A series of shell functions which allow you to "tag" certain directories and return to them later.
     $ ck shell
     Checkpoint (shell) = /home/wizzat/work/shell
@@ -55,6 +57,8 @@ checkpoints.sh: A series of shell functions which allow you to "tag" certain dir
     $ delck proj
     $ ..to work
     Currently in /home/wizzat/work
+
+cmptree: Compares two trees for diffs.  This is primarily useful in p4 merges.
 
 find\_unused\_python.sh A shell script for finding unused python functions and dead code.
 
@@ -99,3 +103,17 @@ tableize.pl: A utility script which I use to tableize certain blocks of code.  I
 cdots.sh: A shell utility that I use heavily.  It has its own license (GPL).
 
 LICENSE: MIT, except for cdots.sh which has its own license.
+
+Many of the perl modules will require some of:
+- Try::Tiny
+- File::Slurp
+- DBI
+- DBD::Oracle
+- Exporter::Easy
+- Text::CSV
+- DateTime
+- File::Basename
+- File::Spec (should come with perl)
+- Getopt::Long (should come with perl)
+- Carp (should come with perl)
+- IO::File (should come with perl)

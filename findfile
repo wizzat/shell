@@ -1,0 +1,10 @@
+#!/usr/bin/perl -w
+use strict;
+
+my $pattern = $ARGV[0] or die "No pattern";
+my $main = `find_up main` or die "Unable to find main";
+chdir $main;
+print($main);
+my $files = `findname "*$pattern*"`;
+
+print($files);

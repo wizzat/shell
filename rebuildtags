@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ $1 ]; then
+    gock $1
+    echo "Rebuilding tags for $PWD"
+    ctags --recurse=yes --links=yes --java-types=cimp --exclude='bugfixes' --exclude='database-dw' --exclude='*.js' --exclude='*Bug*' --exclude='*.as' -f .tags
+else
+    echo "Provide a checkpoint"
+fi;

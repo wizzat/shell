@@ -9,6 +9,7 @@ my @upper_words = qw/
     auto_increment
     begin
     between
+    boolean
     cascade
     commit
     cursor
@@ -26,6 +27,7 @@ my @upper_words = qw/
     float
     from
     function
+    having
     if
     in
     insert
@@ -51,6 +53,7 @@ my @upper_words = qw/
     then
     timestamp
     truncate
+    type
     union
     unique
     update
@@ -65,6 +68,7 @@ push(@upper_words,
     'add column',
     'add primary key',
     'alter table',
+    'alter column',
     'case when',
     'create index',
     'create or replace',
