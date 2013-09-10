@@ -19,9 +19,6 @@ function ck {
     fi
 }
 
-function go {
-    gock $@
-}
 function gock {
     local TAG=${1-$CKDEFAULT_TAG}
     local FILE_NAME="$CKDIR/$TAG"
