@@ -3,13 +3,44 @@ use strict;
 
 use Getopt::Long;
 
+my $USAGE = qq{
+Rim is a utility script which takes care of vim --remote --servername DEV for me.  Special usage: rim -t finds a file in your current project and rim's it.  Examples:
+
+\$ rim find_up
+vim --servername DEV --remote find_up
+
+\$ rim -t find # Find a file somewhere downstream of me.
+vim --servername DEV --remote /home/wizzat/work/shell/find_up
+vim --servername DEV --remote /home/wizzat/work/shell/find_up_dir
+vim --servername DEV --remote /home/wizzat/work/shell/find_unused_python.sh
+vim --servername DEV --remote /home/wizzat/work/shell/findname
+
+\$ fn find | rim # rim also reads from stdin, which allows it to chain nicely with ack -l, ack_and, ack_not, and fn.
+vim --servername DEV --remote /home/wizzat/work/shell/find_up
+vim --servername DEV --remote /home/wizzat/work/shell/find_up_dir
+vim --servername DEV --remote /home/wizzat/work/shell/find_unused_python.sh
+vim --servername DEV --remote /home/wizzat/work/shell/findname
+
+Special environment variables:
+- SERVERNAME: the vim server name to attach to
+- RIMCMD: the vim command to use (eg, vim, mvim, gvim, etc)
+};
+
+my $vimcmd = $ENV{RIMCMD} || 'vim';
 my $vimserver = $ENV{VIMSERVER} || "DEV";
 
 GetOptions (
     't|tag'    => \my $tag,
     'p|parse'  => \my $parse,
     'e|edit'   => \my $edit,
+    'h|help'   => \my $help,
 );
+
+if ($help) {
+    print $USAGE;
+    exit(0);
+}
+
 
 $tag = 1 if $parse;
 
@@ -67,6 +98,6 @@ sub run_cmd {
 
 for my $file (keys %files_to_open) {
     run_cmd("p4 edit $file") if $edit;
-    run_cmd("mvim --servername $vimserver --remote $file");
+    run_cmd("$vimcmd --servername $vimserver --remote $file");
     select(undef, undef, undef, 0.25);
 }

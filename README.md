@@ -80,22 +80,8 @@ findname / fn: Fnids a file in the current project tree.  Example:
 format\_sql\_block.pl: A utility script I use to format SQL in a certain way.  The biggest remaining todo is to detect and align on AS blocks.  It integrates into vim with:
     map ,fs :!~/bin/format_sql_block.pl<CR>
 
-rim: A utility script which takes care of vim --remote --servername DEV for me.  Special usage: rim -t finds a file in your current project and rim's it.  Examples:
-    $ rim find_up
-    mvim --servername DEV --remote find_up
+rim: A utility wrapper around vim --remote --servername.
 
-    $ rim -t find # Find a file somewhere downstream of me.
-    mvim --servername DEV --remote /home/wizzat/work/shell/find_up
-    mvim --servername DEV --remote /home/wizzat/work/shell/find_up_dir
-    mvim --servername DEV --remote /home/wizzat/work/shell/find_unused_python.sh
-    mvim --servername DEV --remote /home/wizzat/work/shell/findname
-
-    $ fn find | rim # rim also reads from stdin, which allows it to chain nicely with ack -l, ack_and, ack_not, and fn.
-    mvim --servername DEV --remote /home/wizzat/work/shell/find_up
-    mvim --servername DEV --remote /home/wizzat/work/shell/find_up_dir
-    mvim --servername DEV --remote /home/wizzat/work/shell/find_unused_python.sh
-    mvim --servername DEV --remote /home/wizzat/work/shell/findname
-    
 tableize.pl: A utility script which I use to tableize certain blocks of code.  It integrates into vim with:
     map ,wt :perldo s/\s+$//g<CR>:perldo s/\t/    /g<CR>
     map ,a  :!~/work/shell/tableize.pl<CR>,wt<CR>
