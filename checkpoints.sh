@@ -3,6 +3,7 @@ export CKDEFAULT_TAG=${CKDEFAULT_TAG-default}
 export CKBOUNCE_TAG=${CKBOUNCE_TAG-bounce}
 mkdir -p $CKDIR
 
+
 function ck {
     local TAG=${1-$CKDEFAULT_TAG}
     local TAG_CONTENTS=${2-"$PWD"}
@@ -24,7 +25,37 @@ function gock {
     local FILE_NAME="$CKDIR/$TAG"
 
     if [ ! -e "$FILE_NAME" ]; then
-        echo $TAG does not exist
+        if [ "$TAG" == $CKDEFAULT_TAG ]; then
+            echo "
+checkpoints.sh: A series of shell functions which allow you to "tag" certain directories and return to them later.
+Example Usages:
+    $ ck shell
+    Checkpoint (shell) = /home/wizzat/work/shell
+
+    $ ckck
+    bounce               = /home/wizzat
+    default              = /home/wizzat/work/fictional_company/my_current_project
+    proj                 = /home/wizzat/work/fictional_company/my_current_project
+    scripts              = /home/wizzat/work/fictional_company/ops/scripts
+    shell                = /home/wizzat/work/shell
+
+    $ cd && pwd
+    /home/wizzat
+
+    $ gock shell
+    Currently in /home/wizzat/work/shell
+
+    $ gock proj
+    Checkpoint (bounce) = /home/wizzat/work/shell
+    Currently in /home/wizzat/work/fictional_company/my_current_project
+
+    $ delck proj
+    $ ..to work
+    Currently in /home/wizzat/work
+            "
+        else
+            echo $TAG does not exist
+        fi
         return 1
     fi
 
@@ -112,4 +143,3 @@ complete -F _.._completion ..
 complete -F _ck_completion delck
 complete -F _ck_completion ckck
 complete -F _ck_completion gock
-complete -F _ck_completion go
