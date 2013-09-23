@@ -1,0 +1,10 @@
+Text::CSV
+Text::CSV_XS
+Try::Tiny
+File::Slurp
+DBI
+DBD::Oracle
+Exporter::Easy
+Text::CSV
+DateTime
+File::Basename

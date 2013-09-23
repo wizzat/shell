@@ -3,6 +3,7 @@ shell
 
 Shell Utilities.
 
+
 ack\_and: An ack-grep based utility which finds the set of files that contain all arguments.  It could be rewritten to use egrep -r over ack-grep.  An example is in order:
     $ ack foobar -l
     /home/wizzat/project/file1
@@ -86,20 +87,10 @@ tableize.pl: A utility script which I use to tableize certain blocks of code.  I
     map ,wt :perldo s/\s+$//g<CR>:perldo s/\t/    /g<CR>
     map ,a  :!~/work/shell/tableize.pl<CR>,wt<CR>
 
+
+
+See perl_modules for list of perl modules which will need installing.
+
 cdots.sh: A shell utility that I use heavily.  It has its own license (GPL).
 
 LICENSE: MIT, except for cdots.sh which has its own license.
-
-Many of the perl modules will require some of:
-- Try::Tiny
-- File::Slurp
-- DBI
-- DBD::Oracle
-- Exporter::Easy
-- Text::CSV
-- DateTime
-- File::Basename
-- File::Spec (should come with perl)
-- Getopt::Long (should come with perl)
-- Carp (should come with perl)
-- IO::File (should come with perl)
