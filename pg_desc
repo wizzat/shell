@@ -1,0 +1,38 @@
+#!/bin/bash
+
+DB_TABLE=$1
+DB_NAME=${2-$DEFAULT_DB}
+REMOTE_HOST=$3
+REMOTE_PSQL=${4-psql}
+
+if [ "${DB_TABLE}x" == "x" ]; then
+  echo "Specify DB_TABLE as arg 1"
+  exit 1
+fi;
+
+if [ "${DB_NAME}x" == "x" ]; then
+  echo "Either set DEFAULT_DB or specify a DB name as arg 2"
+  exit 1
+fi;
+
+COMMAND="echo '\\d $DB_TABLE' | psql $DB_NAME"
+OUTPUT_DIR=~/.desc_output/$DB_NAME
+OUTPUT_FILE=$OUTPUT_DIR/$DB_TABLE 
+
+mkdir -p $OUTPUT_DIR
+find $OUTPUT_DIR -mtime 1 | xargs rm -f
+
+if [ -f $OUTPUT_FILE ]; then
+    echo "Prefetched result"
+else
+    echo "Fetching result"
+    if [ "${REMOTE_HOST}x" != "x" ]; then
+        COMMAND="echo '\\d $DB_TABLE' | $REMOTE_PSQL $DB_NAME"
+        ssh `whoami`@$REMOTE_HOST "$COMMAND" > $OUTPUT_FILE
+    else
+
+        echo "\\d $DB_TABLE" | psql $DB_NAME
+    fi;
+fi;
+
+cat $OUTPUT_FILE
