@@ -1,0 +1,7 @@
+#!/bin/bash
+FOUND_FILE=`find_up $@`
+if [ "$?x" == "0x" ]; then
+    cat $FOUND_FILE
+else
+    exit $?
+fi;
