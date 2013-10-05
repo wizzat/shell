@@ -41,7 +41,8 @@ sub maintain_field_widths {
 
     for (my $i = 0; $i < scalar @$field_ref; ++$i) {
         my $contents = \$field_ref->[$i];
-        $$contents =~ s/^ +(.*) +$/$1/;
+        $$contents =~ s/^ +//;
+        $$contents =~ s/ +$//;
 
         $field_width->{$i} = max($field_width->{$i} || 0, length($$contents));
     }
@@ -62,11 +63,11 @@ sub get_wrapper_tokens {
 
     $open_tokens = sprintf("%${margin}s%s", "", $open_tokens);
 
-    if ($$line =~ s/([,})]+)$//) {
+    if ($$line =~ s/([)\]} ]+)$//) {
         $close_tokens = $1;
-        $close_tokens =~ s/  / /g;
-        $close_tokens =~ s/ +$//;
-        $close_tokens =~ s/^ //;
+        $close_tokens =~ s/\s\s/ /g;
+        $close_tokens =~ s/\s+$//;
+        $close_tokens =~ s/^\s//;
     }
 
     return [ $open_tokens, $close_tokens ];
