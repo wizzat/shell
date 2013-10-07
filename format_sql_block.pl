@@ -45,6 +45,7 @@ my @upper_words = qw/
     package
     procedure
     return
+    returning
     rollback
     select
     set
