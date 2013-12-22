@@ -9,6 +9,7 @@ my @upper_words = qw/
     auto_increment
     begin
     between
+    bigint
     boolean
     cascade
     commit

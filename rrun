@@ -1,0 +1,35 @@
+#!/usr/bin/perl
+use strict;
+
+my $quiet = 0;
+my $dryrun = 0;
+my $remote_host = `find_up_cat .remote_path`;
+my $remote_root = `find_up_cat .remote_root`;
+my $local_root = `find_up_dir .remote_path`;
+
+if (!$remote_host) {
+    print "No remote host?\n";
+    exit(1);
+}
+
+chomp $remote_host;
+chomp $remote_root;
+chomp $local_root;
+
+my $remote_path = $ENV{PWD};
+$remote_path =~ s/$local_root/$remote_root/;
+
+sub run_cmd {
+    my $cmd = shift;
+
+    if (!$quiet) {
+        print("$cmd\n");
+    }
+
+    if (!$dryrun) {
+        system("ssh $remote_host '(cd $remote_path && $cmd)'");
+    }
+}
+
+my $argv = join(" ", @ARGV);
+run_cmd("$argv");
