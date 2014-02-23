@@ -8,3 +8,4 @@ Exporter::Easy
 Text::CSV
 DateTime
 File::Basename
+Set::Scalar

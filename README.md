@@ -44,7 +44,7 @@ checkpoints.sh: A series of shell functions which allow you to "tag" certain dir
     proj                 = /home/wizzat/work/fictional_company/my_current_project
     scripts              = /home/wizzat/work/fictional_company/ops/scripts
     shell                = /home/wizzat/work/shell
-    
+
     $ cd && pwd
     /home/wizzat
 
@@ -66,7 +66,7 @@ find\_unused\_python.sh A shell script for finding unused python functions and d
 find\_up: Finds a file (such as pom.xml or .ck) in any directory up from you (terminating at /).  Example:
     $ find_up pom.xml
     /home/wizzat/work/fictional_company/my_current_project/pom.xml
-    
+
 find\_up\_dir: Finds the directory above you where a certain file exists (such as pom.xml or .ck)
     $ find_up_dir pom.xml
     /home/wizzat/work/fictional_company/my_current_project/

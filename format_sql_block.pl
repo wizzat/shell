@@ -32,6 +32,7 @@ my @upper_words = qw/
     if
     in
     insert
+    int
     integer
     into
     is
@@ -51,6 +52,7 @@ my @upper_words = qw/
     select
     set
     smallint
+    string
     sysdate
     then
     timestamp
