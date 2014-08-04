@@ -8,5 +8,7 @@ GetOptions (
 my $feature      = $ignorecase ? "iname" : "name";
 my $search_param = join("*", @ARGV);
 
-my $cmd = qq/find -L "`pwd -P`" -$feature "*$search_param*" | grep -v '\/target\/' | grep -v '.svn' | grep -v '.hg' | grep -v swp | grep -v swo | grep -v pyc | grep -v class | grep -v __init__.py /;
+my $filter_rc = `find_up .fnrc`;
+chomp $filter_rc;
+my $cmd = qq/find -L "`pwd -P`" -$feature "*$search_param*" | egrep -vf "$filter_rc"/;
 system($cmd);

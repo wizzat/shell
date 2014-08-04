@@ -1,0 +1,3 @@
+#!/bin/bash
+gprof2dot -f pstats $1 | dot -Tpng -o $1.png 2> /dev/null
+open $1.png

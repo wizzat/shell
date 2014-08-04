@@ -1,0 +1,11 @@
+/lib/
+/target/
+.svn
+.hg
+.git
+swp$
+swo$
+.pyc$
+.class$
+.tox
+__init__.py
