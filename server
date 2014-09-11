@@ -1,0 +1,88 @@
+#!/usr/bin/env python
+import argparse
+import getpass
+import json
+import os
+import subprocess
+import sys
+
+def tag_filename(tag_name):
+    return os.path.join(
+        os.path.expanduser('~/.servers'),
+        tag_name,
+    )
+
+def get_server_data(tag_name):
+    try:
+        with open(tag_filename(tag_name), 'r') as fp:
+            return json.load(fp)
+    except (IOError, ValueError):
+        return {}
+
+def set_server_data(tag_name, new_data):
+    data = get_server_data(tag_name)
+    data.update(new_data)
+
+    with open(tag_filename(tag_name), 'w') as fp:
+        json.dump(data, fp)
+
+def add_server(args):
+    set_server_data(args.tag, {
+        'server'  : args.server,
+        'user'    : args.user,
+        'options' : args.ssh_options,
+    })
+
+def del_server(args):
+    try:
+        os.unlink(tag_filename(args.tag))
+    except IOError:
+        pass
+
+def ssh_server(args):
+    data = get_server_data(args.tag)
+
+    cmd = "ssh {options} {user}@{server}".format(
+        options = data['options'],
+        user    = data['user'],
+        server  = data['server'],
+    )
+
+    subprocess.call(cmd, shell=True)
+
+def scp_server(args):
+    cmd = "scp {options} {user}@{server}:{remote_path} {local_path}".format(
+        options     = data['options'],
+        user        = data['user'],
+        server      = data['server'],
+        remote_path = args.remote_path,
+        local_path  = os.path.basename(args.remote_path),
+    )
+
+    subprocess.call(cmd, shell=True)
+
+def show_server(args):
+    print json.dumps(get_server_data(args.tag), indent=4, sort_keys=True)
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="""
+        Tag servers for named ssh and scp
+    """)
+
+    actions = {
+        'add'  : add_server,
+        'del'  : del_server,
+        'ssh'  : ssh_server,
+        'scp'  : scp_server,
+        'show' : show_server,
+    }
+
+    parser.add_argument("action", choices=actions.keys())
+    parser.add_argument("tag", type=unicode)
+    parser.add_argument("-s", "--server", type=unicode)
+    parser.add_argument("-u", "--user", type=unicode, default=getpass.getuser())
+    parser.add_argument("-o", "--ssh-options", type=unicode, default='')
+    parser.add_argument("-r", "--remote-path", type=unicode)
+    args = parser.parse_args()
+
+    actions[args.action](args)
