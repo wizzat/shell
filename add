@@ -7,4 +7,4 @@ for line in sys.stdin:
         s += int(line)
     except Exception, e:
         pass
-print s
+print(s)

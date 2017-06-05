@@ -1,36 +1,15 @@
-#!/usr/bin/perl -w
-use strict;
-use warnings;
+#!/usr/bin/python
+from __future__ import (absolute_import, division, print_function, unicode_literals)
+import collections
+import sys
+import cmd
 
-use Set::Scalar;
+if __name__ == '__main__':
+    files = set(cmd.ack(sys.argv[1]))
 
-my $flags = 'i';
+    for term in sys.argv[2:]:
+        for filename in cmd.ack(term):
+            files.discard(filename)
 
-sub main {
-    my @results = map { Set::Scalar->new(grep_results($_)) } @ARGV;
-
-    die "No files passed back?" unless @results;
-
-    my $files = shift @results;
-
-    foreach my $result (@results) {
-        $files = $files->difference($result);
-    }
-
-    print "$_\n" for $files->members();
-}
-
-sub grep_results {
-    my $search_arg = shift;
-    my %results;
-
-    my $output  = `ack-grep -l${flags} '${search_arg}'`;
-
-    foreach my $file (split(/\n/, $output)) {
-        $results{$file} = 1;
-    }
-
-    return keys %results;
-}
-
-main();
+    for filename in sorted(files):
+        print(filename)
