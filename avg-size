@@ -1,0 +1,2 @@
+#!/bin/bash
+cut -f1 -d\  | awk '{ total += $1; count++ } END { print int(total/count) }' | numfmt --to=iec
