@@ -1,0 +1,36 @@
+#!/bin/bash
+if [ $# -lt 2 ]; then
+    echo "Finds files with pattern1 but without pattern2, pattern3, etc." >&2
+    echo "Usage: $0 pattern1 pattern2 [pattern3 ...]" >&2
+    exit 1
+fi
+
+# Get files matching first pattern
+result=$(rg "$1" -l 2>/dev/null | sort)
+shift
+
+if [ -z "$result" ]; then
+    # No files match first pattern
+    exit 0
+fi
+
+# For each exclusion pattern, remove matching files from result
+for pattern in "$@"; do
+    if [ -z "$result" ]; then
+        # No files left
+        exit 0
+    fi
+
+    # Get files matching this exclusion pattern
+    exclude=$(rg "$pattern" -l 2>/dev/null | sort)
+
+    if [ -n "$exclude" ]; then
+        # Remove excluded files from result (set difference)
+        result=$(comm -23 <(echo "$result") <(echo "$exclude"))
+    fi
+done
+
+# Output final result (only if non-empty)
+if [ -n "$result" ]; then
+    echo "$result"
+fi
