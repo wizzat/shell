@@ -1,0 +1,29 @@
+#!/bin/bash
+if [ $# -lt 1 ]; then
+    echo "rg_and: Find files containing ALL of the given patterns" >&2
+    echo "Usage: $0 pattern1 [pattern2 ...]" >&2
+    exit 1
+fi
+
+# Get files matching first pattern
+result=$(rg "$1" -l 2>/dev/null)
+shift
+
+# For each additional pattern, intersect with current result
+for pattern in "$@"; do
+    if [ -z "$result" ]; then
+        # No files left, can exit early
+        exit 0
+    fi
+
+    # Get files matching this pattern
+    matching=$(rg "$pattern" -l 2>/dev/null)
+
+    # Find intersection: files in both result and matching
+    result=$(comm -12 <(echo "$result" | sort) <(echo "$matching" | sort))
+done
+
+# Output final result (only if non-empty)
+if [ -n "$result" ]; then
+    echo "$result"
+fi

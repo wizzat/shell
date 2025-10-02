@@ -4,33 +4,8 @@ shell
 Shell Utilities.
 
 
-ack\_and: An ack-grep based utility which finds the set of files that contain all arguments.  It could be rewritten to use egrep -r over ack-grep.  An example is in order:
-    $ ack foobar -l
-    /home/wizzat/project/file1
-    /home/wizzat/project/file2
-    /home/wizzat/project/file3
-
-    $ ack foobaz -l
-    /home/wizzat/project/file2
-    /home/wizzat/project/file4
-    /home/wizzat/project/file5
-
-    $ ack_and foobar foobaz
-    /home/wizzat/project/file2
-
-ack\_not: An ack-grep based utility which finds the set of files containing the first argument but not the remaining.  It could be rewritten to use egrep -r over ack-grep.  An example:
-    $ ack foobar -l
-    /home/wizzat/project/file1
-    /home/wizzat/project/file2
-    /home/wizzat/project/file3
-
-    $ ack correct_foobar_import -l
-    /home/wizzat/project/file2
-    /home/wizzat/project/file3
-    /home/wizzat/project/file4
-
-    $ ack_not foobar correct_foobar_import
-    /home/wizzat/project/file1
+rg\_and: A ripgrep-based utility which finds the set of files that contain all arguments
+rg\_not: A ripgrep-based utility which finds the set of files containing the first argument but not the remaining
 
 add: Adds the numbers in a series of columns.  Mostly useful in vim selections.
 
@@ -71,17 +46,9 @@ find\_up\_dir: Finds the directory above you where a certain file exists (such a
     $ find_up_dir pom.xml
     /home/wizzat/work/fictional_company/my_current_project/
 
-findname / fn: Fnids a file in the current project tree.  Example:
-    $ fn find
-    /home/wizzat/work/shell/find_unused_python.sh
-    /home/wizzat/work/shell/find_up
-    /home/wizzat/work/shell/find_up_dir
-    /home/wizzat/work/shell/findname
 
 format\_sql\_block.pl: A utility script I use to format SQL in a certain way.  The biggest remaining todo is to detect and align on AS blocks.  It integrates into vim with:
     map ,fs :!~/bin/format_sql_block.pl<CR>
-
-rim: A utility wrapper around vim --remote --servername.
 
 tableize.pl: A utility script which I use to tableize certain blocks of code.  It integrates into vim with:
     map ,wt :perldo s/\s+$//g<CR>:perldo s/\t/    /g<CR>
@@ -92,5 +59,31 @@ tableize.pl: A utility script which I use to tableize certain blocks of code.  I
 See perl_modules for list of perl modules which will need installing.
 
 cdots.sh: A shell utility that I use heavily.  It has its own license (GPL).
+
+## Python Scripts
+
+**pyprofstats.py**: Profile statistics utility for analyzing Python profiling data. Updated to modern Python 3 with proper error handling and type hints.
+
+**wailing_tritespace.py**: Whitespace processing utility that removes trailing whitespace and converts tabs to spaces. Updated to modern Python 3 with proper error handling.
+
+**shell_cmd.py**: Command execution utilities for running shell commands and searching with ack. Updated to modern Python 3 with comprehensive type hints and improved exception handling.
+
+### Testing
+
+All Python scripts now include comprehensive unit tests in the `tests/` directory. To run tests:
+
+```bash
+pip install -r requirements-dev.txt
+python -m pytest tests/ -v
+```
+
+### Modernization Changes
+
+All Python files have been updated to modern Python 3 standards:
+- Updated shebangs to `#!/usr/bin/env python3`
+- Added comprehensive type hints
+- Improved error handling and documentation
+- Fixed bugs and used modern Python idioms
+- Added comprehensive unit test coverage
 
 LICENSE: MIT, except for cdots.sh which has its own license.
